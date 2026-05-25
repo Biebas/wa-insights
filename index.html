@@ -1,0 +1,1010 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stitch — WA Insights</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --purple:        #6B38FB;
+    --purple-dark:   #5226D4;
+    --purple-deeper: #3D1BAA;
+    --purple-pale:   #F3EFFE;
+    --purple-mid:    #EDE8FD;
+    --white:         #FFFFFF;
+    --off-white:     #F7F8FA;
+    --text:          #111827;
+    --text-mid:      #4B5563;
+    --text-light:    #9CA3AF;
+    --border:        #E5E7EB;
+    --border-mid:    #D1D5DB;
+    --navy:          #0F1624;
+    --navy-mid:      #1A2236;
+    --navy-border:   #2A3550;
+    --amber:         #F59E0B;
+    --amber-pale:    #FFFBEB;
+    --red:           #EF4444;
+    --red-pale:      #FEF2F2;
+    --green:         #10B981;
+    --green-pale:    #ECFDF5;
+    --shadow-sm:     0 1px 3px rgba(0,0,0,0.07);
+    --shadow-md:     0 4px 12px rgba(0,0,0,0.09);
+    --radius:        10px;
+    --radius-lg:     14px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Inter', -apple-system, sans-serif;
+    background: var(--off-white);
+    color: var(--text);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    font-size: 14px;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── HEADER ── */
+  header {
+    background: var(--navy);
+    padding: 0 28px;
+    display: flex;
+    align-items: center;
+    height: 58px;
+    gap: 0;
+    position: sticky;
+    top: 0;
+    z-index: 200;
+    border-bottom: 1px solid var(--navy-border);
+  }
+
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    text-decoration: none;
+    margin-right: 32px;
+  }
+
+  /* Stitch S mark — two horizontal bars like the real logo */
+  .stitch-mark {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    margin-right: 9px;
+  }
+
+  .stitch-mark-svg {
+    width: 34px;
+    height: 24px;
+  }
+
+  .logo-text {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--white);
+    letter-spacing: -0.3px;
+    font-style: normal;
+  }
+
+  .header-divider {
+    width: 1px; height: 20px;
+    background: var(--navy-border);
+    margin: 0 18px;
+  }
+
+  .header-product {
+    font-size: 13px;
+    color: rgba(255,255,255,0.45);
+    font-weight: 400;
+    letter-spacing: 0.01em;
+  }
+
+  .header-right {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .header-badge {
+    font-size: 11px;
+    background: rgba(107,56,251,0.2);
+    color: #A78BFA;
+    padding: 3px 9px;
+    border-radius: 20px;
+    font-weight: 600;
+    border: 1px solid rgba(107,56,251,0.35);
+  }
+
+  /* ── LAYOUT ── */
+  .app-body {
+    flex: 1;
+    display: grid;
+    grid-template-columns: 260px 1fr;
+    height: calc(100vh - 58px);
+    overflow: hidden;
+  }
+
+  /* ── SIDEBAR ── */
+  .sidebar {
+    background: var(--white);
+    border-right: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+  }
+
+  .sidebar-section {
+    padding: 18px 16px 16px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .sidebar-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-light);
+    margin-bottom: 12px;
+  }
+
+  /* UPLOAD */
+  .upload-zone {
+    border: 1.5px dashed var(--border-mid);
+    border-radius: var(--radius);
+    padding: 20px 14px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s;
+    background: var(--off-white);
+    position: relative;
+  }
+
+  .upload-zone:hover, .upload-zone.drag-over {
+    border-color: var(--purple);
+    background: var(--purple-pale);
+  }
+
+  .upload-zone input[type="file"] {
+    position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%;
+  }
+
+  .upload-icon-wrap {
+    width: 36px; height: 36px;
+    background: var(--purple-pale);
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 10px;
+    font-size: 17px;
+  }
+
+  .upload-zone strong { display: block; font-size: 12px; font-weight: 600; color: var(--text); margin-bottom: 3px; }
+  .upload-zone p { font-size: 11px; color: var(--text-light); line-height: 1.5; }
+
+  .how-to-tip {
+    margin-top: 10px;
+    background: var(--off-white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 10px 12px;
+    font-size: 11px;
+    color: var(--text-mid);
+    line-height: 1.6;
+  }
+
+  .how-to-tip strong {
+    display: block; font-size: 10px; font-weight: 700;
+    color: var(--text); margin-bottom: 3px;
+    text-transform: uppercase; letter-spacing: 0.05em;
+  }
+
+  /* BRIEFING BTN */
+  .briefing-btn {
+    width: 100%;
+    padding: 10px 14px;
+    background: var(--purple);
+    color: white;
+    border: none;
+    border-radius: var(--radius);
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    transition: all 0.15s;
+  }
+
+  .briefing-btn:hover { background: var(--purple-dark); transform: translateY(-1px); box-shadow: 0 4px 14px rgba(107,56,251,0.35); }
+  .briefing-btn:disabled { background: #ccc; cursor: not-allowed; transform: none; box-shadow: none; }
+
+  /* CHAT LIST */
+  .chat-list { display: flex; flex-direction: column; gap: 2px; padding: 8px; }
+
+  .chat-item {
+    padding: 9px 10px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.12s;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .chat-item:hover { background: var(--off-white); }
+  .chat-item.active { background: var(--purple-pale); }
+  .chat-item.active .chat-name { color: var(--purple-dark); }
+
+  .chat-avatar {
+    width: 32px; height: 32px;
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; font-weight: 700; color: white;
+    flex-shrink: 0; letter-spacing: 0.02em;
+  }
+
+  .chat-meta { flex: 1; min-width: 0; }
+  .chat-name { font-weight: 600; font-size: 13px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: var(--text); }
+  .chat-count { font-size: 11px; color: var(--text-light); margin-top: 1px; }
+
+  .remove-btn {
+    background: none; border: none; color: #ccc;
+    cursor: pointer; font-size: 13px; padding: 2px 4px;
+    border-radius: 4px; opacity: 0; transition: opacity 0.15s;
+  }
+  .chat-item:hover .remove-btn { opacity: 1; }
+  .remove-btn:hover { color: var(--red); background: var(--red-pale); }
+
+  /* ── CONTENT ── */
+  .content { display: flex; flex-direction: column; overflow: hidden; background: var(--off-white); }
+
+  /* ── EMPTY STATE ── */
+  .empty-state {
+    flex: 1; display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    gap: 14px; padding: 60px 40px; text-align: center;
+  }
+
+  .empty-icon-wrap {
+    width: 72px; height: 72px;
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 32px;
+    box-shadow: var(--shadow-sm);
+    margin-bottom: 4px;
+  }
+
+  .empty-state h2 { font-size: 20px; font-weight: 700; color: var(--text); letter-spacing: -0.3px; line-height: 1.3; }
+  .empty-state p { font-size: 13px; color: var(--text-mid); max-width: 360px; line-height: 1.7; }
+
+  /* ── CHAT VIEW ── */
+  .chat-topbar {
+    background: var(--white);
+    border-bottom: 1px solid var(--border);
+    padding: 13px 24px;
+    display: flex; align-items: center; gap: 14px; flex-shrink: 0;
+  }
+
+  .topbar-avatar {
+    width: 36px; height: 36px; border-radius: 9px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; font-weight: 700; color: white; flex-shrink: 0;
+  }
+
+  .topbar-name { font-weight: 700; font-size: 15px; color: var(--text); }
+  .topbar-meta { font-size: 12px; color: var(--text-light); margin-top: 1px; }
+  .topbar-actions { margin-left: auto; display: flex; gap: 8px; flex-wrap: wrap; }
+
+  .pill-btn {
+    padding: 6px 13px;
+    border-radius: 20px;
+    border: 1px solid var(--border);
+    background: var(--white);
+    font-family: 'Inter', sans-serif;
+    font-size: 12px; font-weight: 500;
+    cursor: pointer; color: var(--text-mid);
+    transition: all 0.12s; white-space: nowrap;
+  }
+
+  .pill-btn:hover { border-color: var(--purple); color: var(--purple); background: var(--purple-pale); }
+
+  .chat-area {
+    flex: 1; overflow-y: auto; padding: 24px;
+    display: flex; flex-direction: column; gap: 14px;
+  }
+
+  .msg-row { display: flex; gap: 10px; max-width: 780px; }
+  .msg-row.user { align-self: flex-end; flex-direction: row-reverse; }
+
+  .msg-avatar-sm {
+    width: 28px; height: 28px; border-radius: 7px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; flex-shrink: 0;
+  }
+
+  .msg-avatar-sm.ai { background: var(--purple); }
+  .msg-avatar-sm.user-av { background: var(--navy); }
+
+  .msg-bubble {
+    padding: 11px 15px; border-radius: 12px;
+    font-size: 13px; line-height: 1.65; max-width: 680px;
+  }
+
+  .msg-bubble.ai {
+    background: var(--white); border: 1px solid var(--border);
+    border-top-left-radius: 3px; box-shadow: var(--shadow-sm);
+  }
+
+  .msg-bubble.user { background: var(--purple); color: white; border-top-right-radius: 3px; }
+
+  .msg-label { font-size: 10px; color: var(--text-light); margin-bottom: 3px; font-weight: 500; }
+  .msg-row.user .msg-label { text-align: right; }
+
+  .msg-bubble.ai h3 {
+    font-size: 11px; font-weight: 700; margin: 12px 0 5px;
+    color: var(--text); text-transform: uppercase; letter-spacing: 0.06em;
+  }
+  .msg-bubble.ai h3:first-child { margin-top: 0; }
+  .msg-bubble.ai ul { padding-left: 16px; display: flex; flex-direction: column; gap: 3px; }
+  .msg-bubble.ai li { font-size: 13px; }
+  .msg-bubble.ai strong { font-weight: 600; color: var(--text); }
+
+  .loading-dots { display: flex; gap: 4px; padding: 3px 0; }
+  .loading-dots span {
+    width: 6px; height: 6px; background: var(--purple);
+    border-radius: 50%; animation: bounce 1.2s ease-in-out infinite;
+  }
+  .loading-dots span:nth-child(2) { animation-delay: 0.2s; }
+  .loading-dots span:nth-child(3) { animation-delay: 0.4s; }
+
+  @keyframes bounce {
+    0%, 80%, 100% { transform: scale(0.5); opacity: 0.4; }
+    40% { transform: scale(1); opacity: 1; }
+  }
+
+  .input-bar {
+    padding: 14px 24px; border-top: 1px solid var(--border);
+    background: var(--white); display: flex; gap: 10px;
+    align-items: flex-end; flex-shrink: 0;
+  }
+
+  .input-bar textarea {
+    flex: 1; border: 1.5px solid var(--border); border-radius: 10px;
+    padding: 10px 14px; font-family: 'Inter', sans-serif; font-size: 13px;
+    resize: none; outline: none; line-height: 1.5;
+    min-height: 40px; max-height: 120px;
+    transition: border-color 0.15s; background: var(--off-white); color: var(--text);
+  }
+  .input-bar textarea:focus { border-color: var(--purple); background: var(--white); }
+  .input-bar textarea::placeholder { color: var(--text-light); }
+
+  .send-btn {
+    height: 40px; width: 40px; background: var(--purple);
+    border: none; border-radius: 10px; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.15s; flex-shrink: 0; color: white; font-size: 16px;
+  }
+  .send-btn:hover { background: var(--purple-dark); }
+  .send-btn:disabled { background: #ccc; cursor: not-allowed; }
+
+  /* ── MORNING BRIEFING ── */
+  .briefing-view {
+    flex: 1; overflow-y: auto; padding: 28px 32px;
+    display: flex; flex-direction: column; gap: 20px;
+  }
+
+  .briefing-page-header {
+    display: flex; align-items: flex-start;
+    justify-content: space-between; gap: 16px; flex-wrap: wrap;
+  }
+
+  .briefing-page-title { font-size: 22px; font-weight: 700; color: var(--text); letter-spacing: -0.4px; }
+  .briefing-date { font-size: 13px; color: var(--text-light); margin-top: 3px; }
+
+  .overview-card {
+    background: var(--navy);
+    border-radius: var(--radius-lg);
+    padding: 22px 26px;
+    display: flex; align-items: center; gap: 32px; flex-wrap: wrap;
+    position: relative; overflow: hidden;
+  }
+
+  .overview-card::before {
+    content: '';
+    position: absolute;
+    top: -40px; right: -40px;
+    width: 200px; height: 200px;
+    background: radial-gradient(circle, rgba(107,56,251,0.25) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .overview-title {
+    font-size: 10px; font-weight: 700; color: rgba(255,255,255,0.4);
+    text-transform: uppercase; letter-spacing: 0.12em; margin-bottom: 6px;
+  }
+
+  .overview-note { font-size: 13px; color: rgba(255,255,255,0.75); line-height: 1.65; max-width: 380px; }
+  .overview-note strong { color: white; }
+
+  .overview-stats { display: flex; gap: 28px; flex-shrink: 0; }
+
+  .ov-stat { text-align: center; }
+  .ov-val { font-size: 30px; font-weight: 700; color: white; letter-spacing: -1.5px; line-height: 1; }
+  .ov-lbl { font-size: 10px; color: rgba(255,255,255,0.4); text-transform: uppercase; letter-spacing: 0.1em; margin-top: 5px; font-weight: 600; }
+
+  .ov-divider { width: 1px; background: rgba(255,255,255,0.08); align-self: stretch; }
+
+  .section-title {
+    font-size: 11px; font-weight: 700; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--text-light);
+  }
+
+  .briefing-cards { display: flex; flex-direction: column; gap: 8px; }
+
+  .briefing-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    transition: box-shadow 0.15s;
+    animation: fadeSlide 0.25s ease;
+  }
+
+  .briefing-card:hover { box-shadow: var(--shadow-md); }
+  .briefing-card.urgent { border-left: 3px solid var(--red); }
+  .briefing-card.followup { border-left: 3px solid var(--amber); }
+  .briefing-card.ok { border-left: 3px solid var(--green); }
+
+  .briefing-card-header {
+    padding: 13px 18px; display: flex; align-items: center;
+    gap: 12px; cursor: pointer; user-select: none; transition: background 0.12s;
+  }
+  .briefing-card-header:hover { background: var(--off-white); }
+
+  .bcard-avatar {
+    width: 34px; height: 34px; border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 12px; color: white; flex-shrink: 0;
+  }
+
+  .bcard-info { flex: 1; min-width: 0; }
+  .bcard-name { font-weight: 600; font-size: 14px; color: var(--text); }
+  .bcard-sub { font-size: 11px; color: var(--text-light); margin-top: 1px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+  .status-badge {
+    padding: 3px 10px; border-radius: 20px;
+    font-size: 11px; font-weight: 600; flex-shrink: 0;
+  }
+  .status-badge.urgent { background: var(--red-pale); color: var(--red); }
+  .status-badge.followup { background: var(--amber-pale); color: #B45309; }
+  .status-badge.ok { background: var(--green-pale); color: #059669; }
+
+  .chevron { font-size: 11px; color: var(--text-light); transition: transform 0.2s; margin-left: 4px; }
+  .chevron.open { transform: rotate(180deg); }
+
+  .briefing-card-body {
+    border-top: 1px solid var(--border);
+    padding: 16px 18px; display: none;
+    font-size: 13px; line-height: 1.65;
+  }
+  .briefing-card-body.open { display: block; }
+
+  .body-section { margin-bottom: 14px; }
+  .body-section:last-of-type { margin-bottom: 0; }
+
+  .body-section-title {
+    font-size: 10px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.09em; color: var(--text-light); margin-bottom: 8px;
+  }
+
+  .action-row {
+    display: flex; align-items: flex-start; gap: 9px;
+    padding: 5px 0; border-bottom: 1px solid var(--border);
+  }
+  .action-row:last-child { border-bottom: none; }
+
+  .dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; margin-top: 5px; }
+  .dot.urgent { background: var(--red); }
+  .dot.followup { background: var(--amber); }
+  .dot.ok { background: var(--green); }
+
+  .action-text { font-size: 13px; color: var(--text); line-height: 1.5; }
+
+  .dive-btn {
+    margin-top: 12px; padding: 7px 14px; border-radius: 8px;
+    border: 1px solid var(--border); background: var(--white);
+    font-family: 'Inter', sans-serif; font-size: 12px; font-weight: 500;
+    cursor: pointer; color: var(--text-mid); transition: all 0.12s;
+  }
+  .dive-btn:hover { border-color: var(--purple); color: var(--purple); background: var(--purple-pale); }
+
+  /* GENERATING */
+  .generating-wrap {
+    flex: 1; display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    gap: 16px; padding: 60px; text-align: center;
+  }
+
+  .spinner-ring {
+    width: 44px; height: 44px;
+    border: 3px solid var(--border);
+    border-top-color: var(--purple);
+    border-radius: 50%;
+    animation: spin 0.85s linear infinite;
+  }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .generating-title { font-size: 16px; font-weight: 700; color: var(--text); letter-spacing: -0.2px; }
+  .generating-sub { font-size: 13px; color: var(--text-light); }
+
+  .progress-track { width: 240px; height: 3px; background: var(--border); border-radius: 2px; overflow: hidden; }
+  .progress-fill { height: 100%; background: var(--purple); border-radius: 2px; transition: width 0.5s ease; }
+
+  ::-webkit-scrollbar { width: 5px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+  @keyframes fadeSlide {
+    from { opacity: 0; transform: translateY(5px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .msg-row { animation: fadeSlide 0.2s ease; }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <a class="logo" href="#">
+    <div style="background:#ffffff;border-radius:8px;padding:5px 12px;display:flex;align-items:center;">
+      <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAgGBgcGBQgHBwcJCQgKDBQNDAsLDBkSEw8UHRofHh0aHBwgJC4nICIsIxwcKDcpLDAxNDQ0Hyc5PTgyPC4zNDL/2wBDAQkJCQwLDBgNDRgyIRwhMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjL/wgARCAHUAyADASIAAhEBAxEB/8QAGwABAQADAQEBAAAAAAAAAAAAAAYEBQcBAwL/xAAaAQEAAwEBAQAAAAAAAAAAAAAAAgMEAQUG/9oADAMBAAIQAxAAAAG5AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPD1odNplboJZ29QQvUEL1BC9QQvUEL1Bfbi3GOAAAAAAAAB5DXdums2dfBHz7YNBv48MWMslevh96IgAAAGsl9Ert57niAAAAAAAAAAAAAAAAAAAB+Ybax/qWee/aq2Sj12o5CeXgg14INeCDXgg14IPItP3xuB49QAAAA+B90hq9kuhue7UrXy1WaO55btdP69t3u+dZGaN7L7PS0trutB8ec23N9tqfSs6Zl8/+mGF4xsnFA0Oh0SvHO8yztw1mzyQ0cPcQ/rW9T9xJXzoWrneTf27afcY4BEAAAAAAAAAAAAAAAABzvWZmJ9HfdbzBzvApCvgAAABjT1vapCfnRK9QQvUEL1Fb+rm2GeIHnO7rmnpT2tHnbClPy3ScHqKsZG4sTsp1Tlt0t1n528yxwInovO7G42WtrKkdM9I5vulT/bf5eCHxlKDnV0v3TbTc85P6e4Uc5XfT+JvnSw1zCdZu5zKXPyc1F0ojyq8mf1vnejxqgAAAAAAAAAAAAAAAAIPSdE577l1JY8pz6udHQTLC9QR29QTvL1BOdvdJj5dXIX5Xr0JwS9dQS9EEvRBqqX0Sp63lPQPPhth51f45r03F1ShN389bunR7Hn2NF1ZB3WCv3lvUuW7J2+80e8wwc76JzvVLcVklW08wOb9I5vtl0zLxMvy65eb3+m9e3ovp41QH58/Y0cLdQ/sW9O+3nvkVBxLz1JNexb0oePUAAAAAAAAAAAAAAAAA0m7T7zD4dT1vpT595erOwS9EEvfpxBUtT9c0fz+jBAAAABJ1mg0diKKd3nr23Q8CnG1edzjfPqzR7zHHzX7HEOa3sFf+pZteW9S5dVy23mj3mODnfROd6Zbetkq2nmBzfpXNdsumZeHmeXXOx/TOa+pb0z6Rdl59f6MenmJgTO29KzbQ9xD3d6n75749QEzN0k37FvSh49QAAAAAAAAAAAAAAAAAAAA+J9kD7tneoIXqCF6gRfIEXyBF8gRdwWFjbJeVk30fjIHj1JKtWd5VsbnWejOd1tlsCYtvWCCGufycx/dz8t89VqbX5Vc01bhZuWP55z0j5y7zX22/O6fxysvK8+vmHvStTunLa+yzJdkr36e4YaSG6Zrr+7j3z3BACZm7/E3z2wwQAAAAAAAAAAAAAAAAAAAAY2T+OuVr17FsEvRBL0QS9EEvRBL0QS9EFn2+wp5r9iebWHAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAH//xAAsEAABBAIBAgUEAgMBAAAAAAAEAAECAwUVNBAxERIwMlATFCAhM0AiJLBg/9oACAEBAAEFAv8AiH9lflKqlLL3utoStoUtoUtoUtoUtoUtoUtoUtoUtoUtoUtoUtoUqskRK3+nLKEtIC6ZA3QvIX0k44q0noRN6x9oSqZPOn0Trp0DRyhLy+Kd2ZjT5Xy9ej+f+k/afvxXC6E4yy4gAOQvQzhobjejleFH3t2+JyxHlgqqp3TqxEGbVDLVDLVDLVDLVDLVDLVDLVDLVDLVDLVDLVDLVDKOMGjL07LYUwuy8vF8gU6jkSmVOYfxrshbDIkWDVbQlP8At6TrqK9oUgL5kDl5C+onHFWkrIGXD3WZEi2ChkiIQ2pKHm9g6IylVSnlCZLYFKvLXxQxtRPTK8KPvuvrHrty1sn2BShlCYoXIVEfDZCfnNWMoasb+z2RhLk3CAzKUcSOzTxNLsSLYLMEpx7ixWLr0zJ28JCY5iadMyFH+2qP52GRYDFWXYpqqVViWsq0zKqH0qsic8pQhKydWH/WooROLsqZneLgFfc1ZXhM/g91thV1OIlJtPV4E4yyluz48r7in4Qv9FoOXmD9O2+uiNuYZPlSXW0KW0KW0KW0KW0JUMvcyHyFN/4k/oVBeH2fQun64+tKVDSYd+0/fiuH0P52G7ozhoXio276Aqx4rUU9coN9K3H2PUXleEsUM0a+uRo+gTi5+Qz4TKVeQtY0xq/TNPYdp2Stl6OPyD+PWUfNG+mVFo5toyjmWUcsO6gVRb1ftP34rhdD+dhu6M4aF4qzMv8AEaH1CfwdmdeWKyvCVUfJV1zLf4B8v4Q4b7mh2eLqowiltoUtoUtoUtoUtoUtoUtoUtoUgrSyXljB5PqxlqxVqxVqxVqxVqxVqxVqhVfiP07PF1jyPrjdbh6yI2Yd1LGlRUh7oLshMhZTKLtKL9p+/FcLpkOdhu6M4aF4qzPcHm/lleFH3t265j+ETl/CmY+JCtpspl+cYSm4uKfxZmi3pZehm6Yifhf0vuiPXtR/HqSJWRB28Hxk/ME/afvxXD6ZDnYbujOGheKsvX5h65eSyE2nDqWYwjVZVrbcrwo+9u3XMfwicv4aUYyaWOGktWMtWKtWKtWKtWKo40WKhXCtvUyzswixTf7nQyr6oiANjdX0IvgPU7+aWNresNWfq3FcPpkOdhu6LbxEQvFVtbW1W1Spsx530kztJlbdCmBZLk3YmjzWZXhR97duuZ/hE5fzUpNGJ5X3Nqw9X4H45/N+4vA8mCfJFOpznZILHytl0yQsq7422Qb7i5Yq2c78hzsN3Tt4sUNIa1r7Wb7i5Yqcp0GhRKjbTZRKsi2pbAlTnOxxQbCJV1xqryvCj727dcz/AAicv4u2Txp2hS2hS2hS2hS2hS2hS2hS2hS2hS2hS2hS2hS2hS2hStItu6U1Sutpqamr8LRqbk+JHdNiKFUEPT+DsztLHjTWrFVAdI8rMePbZQLUP1lCM2fGiutWKqB6x4qUIzaeLGktRQq8eNWu3S6mF8NWMz/hePWQ0McPXP4u/j+vQJaQ4okBYf8AkpM0o6sVasVasVasVasVasVasVasVasVasVasVasVasVasVQBGgvDw/4m/8A/8QAIhEAAgICAgICAwAAAAAAAAAAAAECEhExECEgQEGQIjBR/9oACAEDAQE/AfowqyjKMoyjKMoyj/UlnhLI1gUc+Sjn1oobwXRdF0XRdF0XXnRlGYIrA4sWTDbIrBR8VZR8R0KOSj9RaHvySbKMoyjHFrmA5CkS/pF5HJ5IbJPDIvI5MivkcizH2iGhyLMfa9OLyhxKMoyjKM0+y6Loui6E8k4/PEXg/FlUNYIEtkCWyAxa8I65jr008CmXRdF0OflHZLXEUmNCJ6IEtkCWyAyDGscVSRHXMdevRlGUZRlGUZRkY4JPhPBZFkN5E8FkWWSWyLwWRnsuWQ3kjLrlS69e6Loui6Loui6L/Tt//8QALREAAgIBAgQEBQUBAAAAAAAAAQMAAgQRFBIVITEFEDIzEyAiQEEjMDRSkEL/2gAIAQIBAT8B/wAMKYjb/ibBs2DZsGzYNmwbNg2HBaOv7SkWb6ZapqdDFKs06VjKGluExWPdo1rCNPlXjXZXir9thY40+JaNfRXqm/VN+qcwVOYKnMFTmCpbOWRp8wGvaVwWGXwm16ytDa3DMTHurXijcJlrkiIo2rDWneXUxjeE95iJsqpFpbBaTrCNDpF4jb9YcBglqmp0MwvZMXj3b6YcBkvS1Dpb7NQ0oI6xtck/MtF2ekTYNmwbNg2XxmU7jz8PoOtjH5TDYgHSIzL1t9R6TLtXiDFnrMJ12a8RjsptbkAzBsbNJMyL2o8msw22ZUm0tluB7zCTxn4lpkZtteGkpltqe8cKvTxiYHtR+UaHgX+JTLbU94+tXJ4x9nhtF16fkTIwuM8VJsGzYNmwbNg2VpRd/wBSDOUO0365v1zfrinUaPpmbjiv118sbI+CevaHat6mHBVb0GORZR6zw7uZke6Z4f7hmZ7xnh/oMv6jMfpjdPPUzB9ow9/LG/jH7Ol7UOtZTxAf9CcwXOYLnMFxuda3SvT5sWxDRpMrqo+WLj0bXr3jKGltDKG3F9MzvaGs8O7mP9wzw/3DMz3jPD/QZf1GYNxahWY9JVbQwDXtDjUWniv3mF7Rh8sb+Mfth1mwbNg2bBs2DZsGzYNmwbMbD+GeK3eZzQK8HkptlW1rN4q/rE3aKegRzrNOpiHFVtRN4k96yuSurTf8R9wxhsJjvKTN4j+ss39TjpK51LDRgm7RX0iPyLNPWY+TVdOE+acmtFcB+2B0M5gucwXOYLnMFzmC5zBc5guM8Q/oJaxsdT/jr//EADQQAAECBAQDBwMEAgMAAAAAAAEAAgMRMpEQEjFxISJRIDNBUGFygRMwUiNAobFCsGBigv/aAAgBAQAGPwL/AEiEmc59FyhrVU2yqFlULKoWVQsqhZVCyqFlULKoWVQsqhZVCya0kSJ6ftCJiyzv1ni9jSJD0T/qEcMHvbqAtW2THHUj7Wdms0BNtvK5nRFjDKH/AH+wZ7v2jt0Nzi6IHtkU/M4GfTCL7cIft+0d0N/KxBb/AJa4ZGCZX6riT6LR11o660ddaOutHXWjrrR11o660ddaOutHXWjrrR10HAOmPX7mZ5kFKE2Q6ld6bLvZ7hSjM+WrMwzCaYfiVq2ymsjCJbLVtlnfrNPY0iQ9E/6hHD0QbDIlLoixxEj6YBoLZD0WrbJj3akYZWc7lwIbsF3pXPJ4Uhwd+Jw+UN1meV+kA0LvTZcxDtwsp5X9PJonpwwD/wDJ/wC7PHkGgU6WdVxzH5XKS0qTtPAoceQ6hNGaUuK73+EQvqfUlx6LvjZZM0+KibqKg/PlkJaJz/qzkOmDX/VImOi742TWTnISRgwzy+J6rKwTJU4r/gKpyzMOdv8AKmDIhc1bdUd0Cp69ApxX5fQKtyzNOdq4KTq26+SxfdhCl+P3JxHAL9KH8lcMo+FULKoWVQsqhZVCy5mtcpTyu6HsxZfgcIWXpi5nj4Kj+UwPqA44O3XycYm6i4RfbhD9uDneOgwzGt2vYERo4OTejuBXzh9dw5jp2OWl3FAflw8lzeD+OH0YhkPA/byM4xP6WZ5mftCDGOx7BafHgixyk3i3oVzQrFccw+FyxW9h26+TjE3UXCL7cIXtwhN6klQ2/wDbs8QqQjvg1vQdiGfVQvd5LIVDiFI64SbE4dCqhZVCyqFlULKoWVQsqhZVCyzPcBD21UyHE7qk3VJuqTdUm6pN1Sbqk3VJupwXfBUiOOAnU3gexKI2a/TiXVE9iuaE4fGAa85of9IEaHB26+TjE3UXCL7cIXtwhfKhb9s7ob9mHuoXu8mzs5Yn9qT2y+xJoJKzR9PxUgJD7bYw2ODmdRjnfOXov8rdgzaM3gUQmz8OGDt18nGJuouEX24Q/bg1/wCJTXdDNBw0PYbNuaabDEI8fVHcIb9mHuoXu8nk4Ahd3LZUm6pN1Sbqk3VJuu7nupMaBt92XV2H/nF7RrKeAhuMog/nEucfhE9U2fjxwcPVfJxibqLhF9uEP24OYdCEWO1C+lFo8D0UwZjDM90ln8PBGMdG6L5CG/Zh7qF7vO5uMguWhumD4vwOwYsET6tXQrhEuq/4U3uLig+KJM/vExQORyk17gPQrvX3T8zyeHiom6i4SRaRw8CpCI6671107M4nm8Vw4PGhWWI2S5HkLvFN7id1pJnVBjRwCO6G/Zh7qF7vLHuGoCqFlULKoWVQsqhZVCyqFlULKoWVQsqhZVCyqFlULL9R5OAY3UpsMeHZ54YK4Zh8qp65YYn1PYkV3dlSbomGJE+qL3NMz6o/TGuMnNBHqu7lsVSbrLDEhhJ7QQuALdiqnqeSZ9ccj9FSb9kCIJyQc1pmPXyyJ7T+w5W8OpXDi7xP/Ey06FUm6pN1Sbqk3VJuqTdUm6pN1Sbqk3VJuqTdUm6pN1whj5XD/Sb/AP/EACwQAQACAAQFAwQCAwEAAAAAAAEAERAhMfEgQVFhoXGBsTBQkcFA8GCw0eH/2gAIAQEAAT8h/wBIeoLWiPJJ+z8xvJvS/rZnOc5znOc5zp0yP8O6MI1Y1IhxuMisQrWyuHLjLVFYa/nTDumWV+k6cKjMiAqWTQ+1O0oZrKsA/wAB4b+HqTynBolRchi+gODz2HhvpeJnipoen2pWlOb04CbbDj01lJu2btm7Zu2btm7Zu2btm7Zu2btm7Zu2WMRZ9S8OMchwXbq9BF/gGVAq/plBBX5kUYGlsuXypRasq2XvO2FWCjeZFQP98rhy4y1VIbgr52iWZ01hp3ijC3Qk6xaLYyjR+CLZb0hmX4iMlPSUzPnDNb0zxUyRzkc2OTkpS2Lv6kdyPpBU9Sc/T7MjLyVPbB0hqX2/lKBXQj1bQktno5+fpM5V6x8+pKR2tHRlnJWv3TITrMFxE1z2oagNLOKwROvzV1hWr2R0PQIuezVYMhQmsGe+5JU3GReEPN0wRk03+ucUMhetxXWM0rJD7kZJynsq7u88TO0jLUtOR8ofzDkWxXJfE9Y1rUgoKpI1rye7v9lCB6sAT0D6lUryObBNWd2vEcgbTm05tObTm245lnbKKnDS1eo+HDtz54nXXW/XP7RC1opGpPKTT4KvgYeYw8FhWWv8kzXqsBDlWunbgCktcOThGWt6cP0kM4DRFDTt1i8nKvsrsTK/LDXgttymTo/SysL/AFcatbm/SzkRyf44C04FQ3krR6kOsPYpznD5uxrkel046k8pNLgq+Bh5jDwGFP8A5Q3lz6Ivh0AfWVf8J4mBaEEPQDg93iKm7PstrDWJoGkcLQvcTac2nNpzac2nNpzac2nKpHzM/oiVwzVc33N5zec3nN5zec3nNxypuU/vccuA0jDJsmZN8EenIeZDqknSek/UHDiZrox0fMHWFDsLGak8pNLgi+Bh5jDwGBz+36Rhdx/EzxU0PTg8z8TwH2a5o6nL1S1d/P0Cb1yCIGX0OfrDJgyA+nQEF93pg3Jr/wAYrcpayQcHPA2Cc8ToFckzlmajUbrFjUnlJp8E3wMPMYeCwoQ/5sU/Uo0n2zgakT0GoTkurwS8VND04PM/E8B9n7KISN/Iri3Oc5oX+RcoB+yvqmVqFYXX6LFulh6k5wjYazxCHusuZZePNcoNT88dIbrUc0+CL4GFGOrDwWHIDUI6k/MOqZoDAk0TBsYHmI0Ucj0I4rIr1TWl4qaHpweR+J4D72uIGqynOi7u+CAxk8EnMTMP1EoohCaVD1QmqnoJaoOrHqnnTrAAAaGDKnNXozt1qjDIYWc6+eBfAwB1olRKV/eIODDIDBpfZNSlhhDlC68maX/QcouVf8EtMeqhJVz3+pWqLKeJnipoenB5H4ngPtmogU/E2PNjzY82PNjzY82PNjzY82PNjzY82PNizR16csB3tPxNPkfnh1WuvOMZpAuae8Qv3geBEAjyY9aR7km54iUFN2jLmtSmaw57bx7fyEdv8hNzxGhG228O34kiNxrO/dHad87gAoKMEYre8moCJk980OBewVlNQJhLM/2z++6fwCpVz6Urmd1ef+J6LBTN7ze83vN7ze83vN7ze83vN7ze83vN7zc8dtT7oAUKP9Jv/9oADAMBAAIAAwAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQgwwwwwwgAAAAAAAAA00wEYIAAAAQAAAAAAAAAAAAAAAAAAAACu8d//wD/AP8AgAAAAAYsUU12onSokMIn0YgsAAAAAAAAAAAAAAAAABMoAAAAAsw4wgABsBSFKLFp3EjsIX0jF8gAAAAAAAAAAAAAAAADwIMIEZrPPPErwCDEx2gMEr1FWICP+EBOAAAAAAAAAAAAAAAAABCFHHJkIAAAAVcBFSKKoEGr0uQcba0MCsAAAAAAAAAAAAAAAAAAAAAMoII4444vQBIcVMV8GGJgOFSRsoCcAAAAAAAAAAAAAAAAAAAABV33z3332bMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD/xAAfEQEAAgIDAQEBAQAAAAAAAAABABEQMSAhQEGQMFH/2gAIAQMBAT8Q/DAbwgAD6RKaiqiWKYg6iVxQX5qy2Dt/UAAq4JGAlqLtFKwhojQMUUxRuJTUGwInTjSGCI0+Qa9uWkhyIQfY19R77iBAxtoSkVpYlpGFssS7tHuiBMBdgq6IFD3eSL2ziBAcQABpPgxa7wXaj7T7mybuPSbcMesbvyqKyD94II65KNmBIg1E31g+5sm7i1YO5YVL0C52DjfQhcOYABsMqKwisl25XqOu46xAJiGxLWN2EAneN4Ao5Ap5jcOYAA/5iq2/jr//xAAqEQACAQIEBgICAwEAAAAAAAAAAREhcTFBYZEQUYGhsfAgQJDRMMHx4f/aAAgBAgEBPxD8GCCVBalncs7lncs7lncs7iBtFP4nTWQc8ZDTjDdiocMgYzT+LhBA1FPqvQLFGavI0maTNBmgzQZoMb0Tr8mNCVFcuFcSQU2F9cWOWzEHUNjUFDEYYTmgDCkbjGNkJIKFqKpUMhzDO8YybSnMTUppkIof01JrkjEIn5ZkC0dyzuWdxfNDTi20qogoE8BEUzcxNQsHyzQUDqegwqrQ9KH/AMHQy0OKWfQQ2rHnmMO2EsyUOVzOwlP7QksnzMMazEoclqZzEp/f01h3kEm6G8UWty1uWty1uQN5jJVE0I4NNmmzTZVjoOYoTx4TsJbEkyKX0P8ARSN1p4M8U7lnYHpsd6dwVD5GPgkYMbeY7bN8KpNR/SW3QyNFbQ0WabHBRMVwQ7jcv48xTEUvlwd3OA3LwFUzDrmJ/wBG7Iu+zsDwPA+6LuHuAmMqKZMY0JLIZ4O53zMT4eZ9ZGySLBYLBYLBYLG4iYnwI2xfjiiS0f3kCatoO28xfczHVLIWRQygwwWPLiU8RMq+xEb0a0P3lmLr2MlEsh/S5HVzwbVOa/WUhsUOD96mi/epov3qaL96mi/epov3qaLJVHUY/Plv8Ov/xAAsEAEAAgAEAwgDAQEBAQAAAAABABEhMUFRYaHwECBxgZGxwfEwUNFA4WCw/9oACAEBAAE/EP8A4adf4K/WOTAWq0EwPKNqLCDZhZc59Yn1KfUp9Sn1KfUp9Sn1KfUp9Sn1KfUp9Sie4AAwWv8AG6bYllGRg0YhqualDhhKlQxZgCuW8NKhg+a+xlgQ0sufXInguQUWn4icW5YUuOEp8CODK47Z1L/VAvKocAjBq7DB43hw/wAHVd/8fIM61uzoW/bZZRYswiRV6bKX+9yHV9vxdJ3hOsznJv1TZRXGdXA805diaG5ZAbroTWoVqPPN/M0ksksskssksstUoNlJZ+TWfo5rsGrAzjI7XyllA2Ke0BNgaAe0sANpzjxXxMhfKR59KvBVxFTV4ZShYrW8HDqAatn1SHylmpRUHlUIrkawKxkrZr2lu72pXdRSwDAaewIA1wcCfT4zgpYUWkBkAMVdJYalNNN46+UdrzILXm3A8z41e0GrJjfPGHKC2RMcB8nXs6bvOqbwWKrBxXYJaEOhPtLBVwBPaGt1gH1KlgC5Ph4mvv8ApnJYPCBXvcMokFjWYmg+f9TlUFrwlNxW9gBr4szk6kLVsNWDDUyp7RfXDBWvowyLrkyeEVCJcw4eIjvdSxCyvmKG+i8n9mMN3W3pjhdo7Zec+mf2O2FV9M5yr2JyXzimzALXj4wZqYol159iVuaL1Ze8+gf2GSgQZV1rHlY1MVqOEUYVdDCOhbFO68VKzVNB+IEs+QAa1rLjDFUqYOgoHZoJ0neXYWA15w2DeNoNAIEbOwx4rgSmBpng8oJ89gUW9akfIqxGkZjKYzt0+H6XNAv5wyiZCD63CnmfkvBGY+gZsRtOlN6P7Lwj2L+/ekOOO2F79xP1x9pZA+TBbsOTDEsldubNB65VQnCYV16ud9tLaWHQ4k3DKlYOu8Qpx8py7Ovbw9vH03sTlPn3ODpdOxGdDberC/eXaVRnuw7qZpiHIdlxBzmPWdDAc/WX1ZcDqOXOdN37K0lUuef549qCIllZTBoJhgrweuPnLSV41VZzOf6VBgEPBg+0IanskoTmO1wQsEcRNfxM1MyzOPi4Rrd2r1UqVKlSpUrsGmxpOMHeCLYjon5mnaHV+HCUxIYsYw0kmO/7TUeFZRNAeN3vEAtutgekqhvr5Rpl2X2cszr2/cly72JyHz7nOg7SowzggeACDGXSNwbfmAABp3BQBNlwcIKZIZ0neVZmoEBmvRh3CdWeSqKZn+lADA1vHU84p1wFIkSGq/oB55eX4XjjjjjjjsVIBAJts8Yj27aV/Bt9999980YDxkJGV2Yvh/Uf84CkSJBETESMq03uuz6dyrymS14LM6FA0fU/kUcIf8ZdxTAN11E1IeVRFXaRYbjn5QcpANRLJyzOvb9y3JvYnKfPuc6Tt2NtkT1hlVDT1E7/AEnedE3nJu7Z1jf9MQghijyP6jU0cFMPA9r3cruV5jvAIjY+J8QdU0NAS7/Fb6LWbMXv2Xuco4r/AK9oxoCxG2EkuqOrAcYCyVEHMuD4SwYPF1I2Ykq3IGJUXwHD3nJM69v3Pci9icp8+5zpu3Y1kOI7BTzqOm0yuDcTawtwe4kQwEoGsLFc0tccp0jedA3nIu7Z1jf9MRmxZmT0YmUrj/Kfa59jn2Ofc59zhAWG6Jw+GNvyqMVHkt7Go3V3l2mpZQmuIHnVREQ4I+kwrQ6qhqfztNQCxuCAjDKVXmy15bR0MnKobZuRcji+r3Pcm9icp8+x8zX+hfZ0XbsDXFPhszAfNeg0SYOrW+rZ4QKkWmxPHsAR1guK2DVjeCdUzmKal+rzfI95g6zGdE3nJu6Z1jf92W37TQQ0iW26tfNCVEqETPV+O4o3ipeqPiX5fk2IwGfMAlfWeaVMzIAq7nwijJodeToQmgCgNDsSCVUw1x23mKoLsC/CfcJdH6CjJF6L2Jynz7CHtyODLjmunDSx3gAmsIBPs8qXYEKFEwLH4bweEGj8kYG45MwG8f8AEyl3bdhPrUVcSxD+dw1Xw3QI1UPmDqdZ0Tecm7pnWN/1jLgvJqJJj/lqqqqrrrrrrrrpQnP58sbQ8jDsQOAXoNV4EBmq67tV8+6d5S16jGPGz0LnMloLNKnxBFE1H1mBRWm3aaNqQsY1enGt9BnTXzLC8JLHnGZXaEehG0/TG2rLPtZKW4I1stoI95118yieeXFlr2OkPMSRe1dFr0bhjVTah8QWMMR3K4codMBQBQS49dhCKzLEl0UhN71gABkYHcrcmVo5aQ6tnUxPP9Z0DdNX864rMEhPHXylIDK7Hg4E0/8AJGLazGrEp/MMMsMMsMMMsMMMExgZ9r/eFyBkBU4f+iJf/wANP//Z" alt="Stitch" style="height:22px;width:auto;display:block;">
+    </div>
+  </a>
+  <span class="header-product">WA Insights</span>
+  <div class="header-right">
+    <span class="header-badge">Internal Tool</span>
+  </div>
+</header>
+
+<!-- BODY -->
+<div class="app-body">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-section">
+      <div class="sidebar-label">Upload Chats</div>
+      <div class="upload-zone" id="uploadZone">
+        <input type="file" id="fileInput" accept=".txt,.zip" multiple>
+        <div class="upload-icon-wrap">📂</div>
+        <strong>Drop files or click to upload</strong>
+        <p>WhatsApp .txt or .zip exports<br>Upload multiple at once</p>
+      </div>
+      <div class="how-to-tip">
+        <strong>📱 How to export</strong>
+        Open chat → ⋮ → More → Export Chat → Without Media → share the .txt file
+      </div>
+    </div>
+
+    <div class="sidebar-section" id="briefingSection" style="display:none">
+      <button class="briefing-btn" id="briefingBtn" onclick="runMorningBriefing()">
+        🌅 Morning Briefing
+      </button>
+    </div>
+
+    <div style="padding: 8px 8px 16px;">
+      <div class="sidebar-label" style="padding: 12px 8px 8px;">Conversations</div>
+      <div class="chat-list" id="chatList">
+        <div style="font-size:12px;color:var(--text-light);padding:4px 8px;font-style:italic">No chats loaded yet</div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- CONTENT -->
+  <section class="content" id="contentArea">
+    <div class="empty-state">
+      <div class="empty-icon-wrap">🌅</div>
+      <h2>Your morning briefing<br>starts here</h2>
+      <p>Export your WhatsApp Business chats and upload them all at once. Claude will surface what needs attention — urgencies, follow-ups, and decisions — across every conversation in one view.</p>
+    </div>
+  </section>
+</div>
+
+<script>
+const COLORS = ['#6B38FB','#5226D4','#374151','#1C3A5E','#065F46','#7C2D12','#1E3A5F','#4A2C6E'];
+
+const state = {
+  chats: {}, activeChat: null,
+  activeBriefing: false, conversationHistory: [], isLoading: false,
+};
+
+function parseWhatsApp(raw) {
+  // Normalise line endings
+  raw = raw.replace(/\r\n/g, '\n').replace(/\r/g, '\n');
+  // Strip zero-width / invisible unicode chars WhatsApp injects
+  raw = raw.replace(/[\u200e\u200f\u202a-\u202e\u2066-\u2069]/g, '');
+  const lines = raw.split('\n'), messages = [];
+
+  // Pattern 1: [YYYY/MM/DD, HH:MM:SS] Sender: text  — Mac export (NO dash)
+  const p1 = /^\[(\d{4}[\/-]\d{1,2}[\/-]\d{1,2}),\s*(\d{1,2}:\d{2}(?::\d{2})?)\]\s(.+?):\s(.+)$/;
+  // Pattern 2: [DD/MM/YY, HH:MM:SS] Sender: text  — older iOS (NO dash)
+  const p2 = /^\[(\d{1,2}[\/-]\d{1,2}[\/-]\d{2,4}),\s*(\d{1,2}:\d{2}(?::\d{2})?(?:\s?[AP]M)?)\]\s(.+?):\s(.+)$/;
+  // Pattern 3: DD/MM/YY, HH:MM - Sender: text  — Android export (WITH dash)
+  const p3 = /^(\d{1,2}[\/-]\d{1,2}[\/-]\d{2,4}),\s(\d{1,2}:\d{2}(?:\s?[AP]M)?)\s-\s(.+?):\s(.+)$/;
+  // Pattern 4: [DD/MM/YY, HH:MM:SS] - Sender: text  — some iOS (WITH dash)
+  const p4 = /^\[(\d{1,2}[\/-]\d{1,2}[\/-]\d{2,4}),\s*(\d{1,2}:\d{2}(?::\d{2})?(?:\s?[AP]M)?)\]\s-\s(.+?):\s(.+)$/;
+
+  let cur = null;
+  for (const line of lines) {
+    const m = line.match(p1) || line.match(p2) || line.match(p3) || line.match(p4);
+    if (m) {
+      if (cur) messages.push(cur);
+      // Strip any remaining invisible chars from sender/text
+      cur = {
+        date: m[1], time: m[2],
+        sender: m[3].trim().replace(/[\u200e\u200f]/g,''),
+        text: m[4].trim().replace(/[\u200e\u200f]/g,'')
+      };
+    } else if (cur && line.trim() && !line.includes('end-to-end')) {
+      cur.text += '\n' + line.trim();
+    }
+  }
+  if (cur) messages.push(cur);
+  return messages;
+}
+
+function chatStats(msgs) {
+  const s={};msgs.forEach(m=>{s[m.sender]=(s[m.sender]||0)+1;});
+  const d=msgs.map(m=>m.date);
+  return { total:msgs.length, senders:Object.keys(s).length, dateRange:d.length?`${d[0]} – ${d[d.length-1]}`:'—' };
+}
+
+function refreshSidebar() {
+  const list=document.getElementById('chatList'), keys=Object.keys(state.chats);
+  const bsec=document.getElementById('briefingSection');
+  bsec.style.display = keys.length ? 'block':'none';
+  if (!keys.length) { list.innerHTML='<div style="font-size:12px;color:var(--text-light);padding:4px 8px;font-style:italic">No chats loaded yet</div>'; return; }
+  list.innerHTML = keys.map((k,i)=>{
+    const c=state.chats[k], initials=c.name.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2);
+    const color=COLORS[i%COLORS.length], isActive=!state.activeBriefing&&state.activeChat===k;
+    return `<div class="chat-item ${isActive?'active':''}" onclick="selectChat('${k}')">
+      <div class="chat-avatar" style="background:${color}">${initials}</div>
+      <div class="chat-meta"><div class="chat-name">${c.name}</div><div class="chat-count">${c.messages.length} messages</div></div>
+      <button class="remove-btn" onclick="removeChat(event,'${k}')">✕</button>
+    </div>`;
+  }).join('');
+}
+
+function selectChat(key) {
+  state.activeChat=key; state.activeBriefing=false; state.conversationHistory=[];
+  refreshSidebar(); renderChatView();
+}
+
+function removeChat(e,key) {
+  e.stopPropagation(); delete state.chats[key];
+  if (state.activeChat===key){state.activeChat=null;state.conversationHistory=[];}
+  refreshSidebar();
+  if(!Object.keys(state.chats).length) renderEmpty();
+  else if(!state.activeBriefing&&!state.activeChat) renderEmpty();
+}
+
+function renderEmpty() {
+  state.activeBriefing=false;
+  document.getElementById('contentArea').innerHTML=`
+    <div class="empty-state">
+      <div class="empty-icon-wrap">🌅</div>
+      <h2>Your morning briefing<br>starts here</h2>
+      <p>Export your WhatsApp Business chats and upload them all at once. Claude will surface what needs attention across every conversation in one view.</p>
+    </div>`;
+}
+
+function renderChatView() {
+  const chat=state.chats[state.activeChat]; if(!chat) return renderEmpty();
+  const stats=chatStats(chat.messages);
+  const initials=chat.name.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2);
+  const colorIdx=Object.keys(state.chats).indexOf(state.activeChat);
+  const color=COLORS[colorIdx%COLORS.length];
+  document.getElementById('contentArea').innerHTML=`
+    <div class="chat-topbar">
+      <div class="topbar-avatar" style="background:${color}">${initials}</div>
+      <div>
+        <div class="topbar-name">${chat.name}</div>
+        <div class="topbar-meta">${stats.total} messages · ${stats.senders} participants · ${stats.dateRange}</div>
+      </div>
+      <div class="topbar-actions">
+        <button class="pill-btn" onclick="quickAsk('What items are outstanding or need follow-up?')">⏳ Outstanding</button>
+        <button class="pill-btn" onclick="quickAsk('Summarise this conversation')">📋 Summarise</button>
+        <button class="pill-btn" onclick="quickAsk('What decisions were made?')">✅ Decisions</button>
+        <button class="pill-btn" onclick="quickAsk('What are the key topics discussed?')">🏷 Topics</button>
+      </div>
+    </div>
+    <div class="chat-area" id="chatArea"></div>
+    <div class="input-bar">
+      <textarea id="userInput" placeholder="Ask anything about this conversation…" rows="1" onkeydown="handleKey(event)" oninput="autoResize(this)"></textarea>
+      <button class="send-btn" id="sendBtn" onclick="sendMessage()">➤</button>
+    </div>`;
+  appendAIMessage(`I've loaded **${chat.name}** — ${stats.total} messages between ${stats.senders} participant(s) from ${stats.dateRange}.\n\nWhat would you like to know? Use the quick buttons above or ask me anything.`);
+}
+
+async function runMorningBriefing() {
+  const keys=Object.keys(state.chats); if(!keys.length) return;
+  state.activeBriefing=true; state.activeChat=null; refreshSidebar();
+  const today=new Date().toLocaleDateString('en-ZA',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+  document.getElementById('contentArea').innerHTML=`
+    <div class="generating-wrap">
+      <div class="spinner-ring"></div>
+      <div class="generating-title">Generating morning briefing…</div>
+      <div class="generating-sub">Analysing ${keys.length} conversation${keys.length>1?'s':''}</div>
+      <div class="progress-track"><div class="progress-fill" id="progressFill" style="width:5%"></div></div>
+      <div id="progressLabel" style="font-size:11px;color:var(--text-light)">Starting…</div>
+    </div>`;
+
+  const results=[]; let urgentCount=0, followupCount=0;
+
+  for (let i=0;i<keys.length;i++) {
+    const key=keys[i], chat=state.chats[key];
+    const pct=Math.round(((i+1)/keys.length)*90);
+    const fill=document.getElementById('progressFill'), lbl=document.getElementById('progressLabel');
+    if(fill) fill.style.width=pct+'%';
+    if(lbl) lbl.textContent=`Analysing: ${chat.name}…`;
+
+    const context=chat.messages.slice(-150).map(m=>`[${m.date} ${m.time}] ${m.sender}: ${m.text}`).join('\n');
+    const prompt=`Analyse this WhatsApp Business conversation for a morning briefing. Be concise and actionable.
+
+CHAT: ${chat.name}
+MESSAGES:
+${context}
+
+Respond ONLY with valid JSON, no other text:
+{
+  "summary": "2-3 sentence overview",
+  "urgentItems": ["item1"],
+  "followUpItems": ["item1"],
+  "decisions": ["item1"],
+  "status": "urgent|followup|ok",
+  "lastActivity": "brief description of most recent exchange"
+}`;
+
+    try {
+      const resp=await fetch('https://api.anthropic.com/v1/messages',{
+        method:'POST', headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({ model:'claude-sonnet-4-20250514', max_tokens:1000, messages:[{role:'user',content:prompt}] })
+      });
+      const data=await resp.json();
+      let raw=(data.content?.[0]?.text||'{}').replace(/```json|```/g,'').trim();
+      const parsed=JSON.parse(raw);
+      parsed.chatKey=key; parsed.chatName=chat.name; parsed.colorIndex=i;
+      results.push(parsed);
+      if(parsed.status==='urgent') urgentCount++;
+      else if(parsed.status==='followup') followupCount++;
+    } catch(e) {
+      results.push({chatKey:key,chatName:chat.name,colorIndex:i,summary:'Could not analyse.',urgentItems:[],followUpItems:[],decisions:[],status:'ok',lastActivity:'—'});
+    }
+  }
+  renderBriefing(results, urgentCount, followupCount, today);
+}
+
+function renderBriefing(results, urgentCount, followupCount, today) {
+  const total=results.length, okCount=total-urgentCount-followupCount;
+  const note = urgentCount>0
+    ? `You have <strong>${urgentCount} urgent conversation${urgentCount!==1?'s':''}</strong> requiring action today.${followupCount>0?` ${followupCount} more need follow-up.`:''}`
+    : followupCount>0 ? `No urgent items — but <strong>${followupCount} conversation${followupCount!==1?'s':''}</strong> need follow-up.`
+    : 'All conversations are in good shape. Nothing urgent to action today.';
+
+  document.getElementById('contentArea').innerHTML=`
+    <div class="briefing-view">
+      <div class="briefing-page-header">
+        <div>
+          <div class="briefing-page-title">Morning Briefing</div>
+          <div class="briefing-date">${today}</div>
+        </div>
+        <button class="pill-btn" onclick="runMorningBriefing()" style="flex-shrink:0">↻ Refresh</button>
+      </div>
+      <div class="overview-card">
+        <div style="flex:1">
+          <div class="overview-title">Today's overview</div>
+          <div class="overview-note">${note}</div>
+        </div>
+        <div class="overview-stats">
+          <div class="ov-stat"><div class="ov-val" style="color:#FCA5A5">${urgentCount}</div><div class="ov-lbl">Urgent</div></div>
+          <div class="ov-divider"></div>
+          <div class="ov-stat"><div class="ov-val" style="color:#FCD34D">${followupCount}</div><div class="ov-lbl">Follow-up</div></div>
+          <div class="ov-divider"></div>
+          <div class="ov-stat"><div class="ov-val" style="color:#6EE7B7">${okCount}</div><div class="ov-lbl">All good</div></div>
+          <div class="ov-divider"></div>
+          <div class="ov-stat"><div class="ov-val">${total}</div><div class="ov-lbl">Chats</div></div>
+        </div>
+      </div>
+      <div class="section-title">Conversations</div>
+      <div class="briefing-cards">
+        ${results.sort((a,b)=>({urgent:0,followup:1,ok:2}[a.status]||2)-({urgent:0,followup:1,ok:2}[b.status]||2)).map((r,i)=>renderBriefingCard(r,i)).join('')}
+      </div>
+    </div>`;
+}
+
+function renderBriefingCard(r, idx) {
+  const color=COLORS[r.colorIndex%COLORS.length];
+  const initials=r.chatName.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2);
+  const statusLabel=r.status==='urgent'?'Urgent':r.status==='followup'?'Follow-up':'All good';
+  const bodyOpen=r.status==='urgent'?'open':'';
+  const urgentHtml=r.urgentItems?.length?`<div class="body-section"><div class="body-section-title">🔴 Action Required</div>${r.urgentItems.map(i=>`<div class="action-row"><div class="dot urgent"></div><div class="action-text">${i}</div></div>`).join('')}</div>`:'';
+  const followupHtml=r.followUpItems?.length?`<div class="body-section"><div class="body-section-title">🟡 Follow-ups</div>${r.followUpItems.map(i=>`<div class="action-row"><div class="dot followup"></div><div class="action-text">${i}</div></div>`).join('')}</div>`:'';
+  const decisionsHtml=r.decisions?.length?`<div class="body-section"><div class="body-section-title">✅ Decisions Made</div>${r.decisions.map(i=>`<div class="action-row"><div class="dot ok"></div><div class="action-text">${i}</div></div>`).join('')}</div>`:'';
+  const lastHtml=r.lastActivity?`<div class="body-section"><div class="body-section-title">💬 Last Activity</div><div class="action-text" style="color:var(--text-mid)">${r.lastActivity}</div></div>`:'';
+  return `<div class="briefing-card ${r.status}">
+    <div class="briefing-card-header" onclick="toggleCard('bc-${idx}','bchev-${idx}')">
+      <div class="bcard-avatar" style="background:${color}">${initials}</div>
+      <div class="bcard-info">
+        <div class="bcard-name">${r.chatName}</div>
+        <div class="bcard-sub">${(r.summary||'').substring(0,90)}${(r.summary||'').length>90?'…':''}</div>
+      </div>
+      <span class="status-badge ${r.status}">${statusLabel}</span>
+      <span class="chevron ${bodyOpen}" id="bchev-${idx}">▼</span>
+    </div>
+    <div class="briefing-card-body ${bodyOpen}" id="bc-${idx}">
+      ${urgentHtml}${followupHtml}${decisionsHtml}${lastHtml}
+      <button class="dive-btn" onclick="selectChat('${r.chatKey}')">Open conversation →</button>
+    </div>
+  </div>`;
+}
+
+function toggleCard(cid,hid){document.getElementById(cid)?.classList.toggle('open');document.getElementById(hid)?.classList.toggle('open');}
+
+function appendUserMessage(text) {
+  const area=document.getElementById('chatArea'), row=document.createElement('div');
+  row.className='msg-row user';
+  row.innerHTML=`<div><div class="msg-label" style="text-align:right">You</div><div class="msg-bubble user">${escHtml(text)}</div></div><div class="msg-avatar-sm user-av">👤</div>`;
+  area.appendChild(row); area.scrollTop=area.scrollHeight;
+}
+
+function appendAIMessage(text) {
+  const area=document.getElementById('chatArea'), row=document.createElement('div');
+  row.className='msg-row';
+  row.innerHTML=`<div class="msg-avatar-sm ai"><svg width="14" height="14" viewBox="0 0 44 30" fill="none"><rect x="6" y="3" width="22" height="5" rx="2.5" fill="white"/><path d="M28 8 C28 13, 6 13, 6 18" stroke="white" stroke-width="5" stroke-linecap="round" fill="none"/><rect x="16" y="22" width="22" height="5" rx="2.5" fill="white"/></svg></div>
+    <div><div class="msg-label">Stitch AI</div><div class="msg-bubble ai">${formatAI(text)}</div></div>`;
+  area.appendChild(row); area.scrollTop=area.scrollHeight;
+}
+
+function appendLoading() {
+  const area=document.getElementById('chatArea'), row=document.createElement('div');
+  row.className='msg-row'; row.id='loadingRow';
+  row.innerHTML=`<div class="msg-avatar-sm ai"><svg width="14" height="14" viewBox="0 0 44 30" fill="none"><rect x="6" y="3" width="22" height="5" rx="2.5" fill="white"/><path d="M28 8 C28 13, 6 13, 6 18" stroke="white" stroke-width="5" stroke-linecap="round" fill="none"/><rect x="16" y="22" width="22" height="5" rx="2.5" fill="white"/></svg></div>
+    <div><div class="msg-label">Stitch AI</div><div class="msg-bubble ai"><div class="loading-dots"><span></span><span></span><span></span></div></div></div>`;
+  area.appendChild(row); area.scrollTop=area.scrollHeight;
+}
+
+function removeLoading(){document.getElementById('loadingRow')?.remove();}
+
+function formatAI(text){
+  text=text.replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>');
+  text=text.replace(/^###? (.+)$/gm,'<h3>$1</h3>');
+  text=text.replace(/^[\-\*] (.+)$/gm,'<li>$1</li>');
+  text=text.replace(/(<li>.*<\/li>)/s,'<ul>$1</ul>');
+  text=text.replace(/\n\n/g,'<br><br>');
+  text=text.replace(/\n/g,'<br>');
+  return text;
+}
+
+function escHtml(t){return t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function autoResize(el){el.style.height='auto';el.style.height=Math.min(el.scrollHeight,120)+'px';}
+function handleKey(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendMessage();}}
+function quickAsk(text){document.getElementById('userInput').value=text;sendMessage();}
+
+async function sendMessage(){
+  if(state.isLoading||!state.activeChat) return;
+  const input=document.getElementById('userInput'), text=input.value.trim();
+  if(!text) return;
+  input.value=''; input.style.height='auto';
+  document.getElementById('sendBtn').disabled=true; state.isLoading=true;
+  appendUserMessage(text); appendLoading();
+  const chat=state.chats[state.activeChat];
+  const chatContext=chat.messages.slice(-400).map(m=>`[${m.date} ${m.time}] ${m.sender}: ${m.text}`).join('\n');
+  const systemPrompt=`You are a WhatsApp Business conversation analyst for Stitch, a South African fintech company.\n\nCHAT: ${chat.name}\nMESSAGES (${Math.min(chat.messages.length,400)} most recent):\n${chatContext}\n\nBe specific, reference actual content, and be actionable. Use clear headers and bullet points where helpful.`;
+  state.conversationHistory.push({role:'user',content:text});
+  try {
+    const resp=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,system:systemPrompt,messages:state.conversationHistory})
+    });
+    const data=await resp.json();
+    const reply=data.content?.[0]?.text||'Sorry, could not process that.';
+    state.conversationHistory.push({role:'assistant',content:reply});
+    removeLoading(); appendAIMessage(reply);
+  } catch(e) { removeLoading(); appendAIMessage('Error connecting. Please check your connection.'); }
+  state.isLoading=false; document.getElementById('sendBtn').disabled=false;
+}
+
+document.getElementById('fileInput').addEventListener('change',handleFiles);
+const zone=document.getElementById('uploadZone');
+zone.addEventListener('dragover',e=>{e.preventDefault();zone.classList.add('drag-over');});
+zone.addEventListener('dragleave',()=>zone.classList.remove('drag-over'));
+zone.addEventListener('drop',e=>{e.preventDefault();zone.classList.remove('drag-over');handleFiles({target:{files:e.dataTransfer.files}});});
+
+let pending=0,loaded=0;
+
+function finishLoading(){
+  loaded++;
+  if(loaded>=pending){
+    refreshSidebar();
+    const keys=Object.keys(state.chats);
+    if(!state.activeChat&&!state.activeBriefing){
+      if(keys.length===1) selectChat(keys[0]);
+      else if(keys.length>1) runMorningBriefing();
+    }
+    pending=0; loaded=0;
+  }
+}
+
+function processTxt(raw, filename){
+  const msgs=parseWhatsApp(raw);
+  if(msgs.length){
+    // Derive a clean name: strip path, "WhatsApp Chat with ", zip name clues, extension
+    let name=filename
+      .replace(/^.*[\/\\]/,'')          // remove path
+      .replace(/WhatsApp[_ ]Chat[_ ][_-]?/i,'')
+      .replace(/_chat\.txt$/i,'')
+      .replace(/\.txt$/i,'')
+      .replace(/\.zip$/i,'')
+      .replace(/[_-]+/g,' ')
+      .trim();
+    if(!name) name=filename;
+    const key=filename+'_'+Date.now();
+    state.chats[key]={name,messages:msgs};
+  }
+}
+
+async function processZip(file){
+  // Use JSZip loaded from CDN to extract _chat.txt
+  try {
+    const JSZip = await loadJSZip();
+    const zip = await JSZip.loadAsync(file);
+    const chatFile = zip.file(/chat\.txt$/i)[0] || zip.file(/\.txt$/i)[0];
+    if(!chatFile){ finishLoading(); return; }
+    const raw = await chatFile.async('string');
+    processTxt(raw, file.name);
+  } catch(e) {
+    console.error('ZIP error', e);
+  }
+  finishLoading();
+}
+
+let _jszipPromise=null;
+function loadJSZip(){
+  if(_jszipPromise) return _jszipPromise;
+  _jszipPromise=new Promise((resolve,reject)=>{
+    const s=document.createElement('script');
+    s.src='https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js';
+    s.onload=()=>resolve(window.JSZip);
+    s.onerror=reject;
+    document.head.appendChild(s);
+  });
+  return _jszipPromise;
+}
+
+function handleFiles(e){
+  const files=Array.from(e.target.files).filter(f=>f.name.endsWith('.txt')||f.name.endsWith('.zip'));
+  if(!files.length) return;
+  pending+=files.length;
+  files.forEach(file=>{
+    if(file.name.endsWith('.zip')){
+      processZip(file);
+    } else {
+      const reader=new FileReader();
+      reader.onload=ev=>{ processTxt(ev.target.result, file.name); finishLoading(); };
+      reader.readAsText(file);
+    }
+  });
+  e.target.value='';
+}
+</script>
+</body>
+</html>
